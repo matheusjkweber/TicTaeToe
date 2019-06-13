@@ -55,7 +55,7 @@ export default props => {
                 </Text>
 
                 <View style={styles.buttonContainer}>
-                    <Button color={common.colors.buttonDefault} title={buttonTitle}/>
+                    <Button color={common.colors.buttonDefault} title={buttonTitle} onPress={props.buttonAction}/>
                 </View>
         </View>
     )

@@ -11,7 +11,7 @@ export default props => {
     return (
         <View style={styles.mainContainer}>
             <Header />
-            <Field />
+            <Field fieldValue="player2" rightToLeftDiagonal/>
         </View>
     )
 }

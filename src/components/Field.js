@@ -5,6 +5,7 @@ import {
         StyleSheet
 } from 'react-native'
 import common from './../style/common'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default props => {
     let style = null
@@ -20,20 +21,29 @@ export default props => {
         diagonalOrientation = {transform: [{rotate: '-45deg'}]};
     }
 
+    let fieldValue = null
+
+    if(props.fieldValue === 'player1') {
+        fieldValue = <Icon name="circle-thin" size={common.sizes.fieldSize} color={common.colors.player1Color} />
+    } else if(props.fieldValue === 'player2') {
+        fieldValue = <Icon name="times" size={common.sizes.fieldSize} color={common.colors.player2Color} />
+    }
+
     return (
         <View style={styles.container}>
-            <View style={[style, diagonalOrientation]} />
-            <View>
-                
+            <View style={[styles.fieldValue]}>
+                {fieldValue}
             </View>
+            <View style={[style, diagonalOrientation]} />
+            
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: Dimensions.get('window').width / 3,
-        height: Dimensions.get('window').width / 3,
+        width: common.sizes.fieldSize,
+        height: common.sizes.fieldSize,
         borderWidth: 1,
         backgroundColor: '#E0E0E0',
         borderColor: common.colors.borderColor
@@ -42,14 +52,18 @@ const styles = StyleSheet.create({
         height: 1,
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        marginTop: '50%'
+        marginTop: '-50%'
     },
     diagonalLine: {
         height: 1,
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        marginTop: '50%',
+        marginTop: '-50%',
         width: '140%',
         left: '-20%'
+    },
+    fieldValue: {
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 })

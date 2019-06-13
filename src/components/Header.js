@@ -18,17 +18,17 @@ export default props => {
             <View style={styles.board}>
                 <Text style={styles.player1Score}>Player 1: 
                     <Text style={{fontWeight: 'bold'}}>
-                        {props.player1Score}
+                         {'  '}{props.player1Score || 0}
                     </Text>
                 </Text>
                 <Text style={styles.player2Score}>Player 2: 
                     <Text style={{fontWeight: 'bold'}}>
-                        {props.player2Score}
+                        {'  '}{props.player2Score || 0}
                     </Text>
                 </Text>
                 <Text style={styles.gamesScore}>Games: 
                     <Text style={{fontWeight: 'bold'}}>
-                        {props.numberOfGames}
+                        {'  '}{props.numberOfGames || 0}
                     </Text>
                 </Text>
             </View>

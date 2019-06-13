@@ -4,6 +4,6 @@ export default {
         player1Color: 'red',
         player2Color: 'blue',
         neutralColor: '#383838',
-        borderColor: '#909090'
+        borderColor: '#CCC'
     }
 }

@@ -6,12 +6,13 @@ import {
 import common from '../style/common'
 import Header from './Header'
 import Field from './Field'
+import Board from './Board'
 
 export default props => {
     return (
         <View style={styles.mainContainer}>
             <Header />
-            <Field fieldValue="player2" rightToLeftDiagonal/>
+            <Board board={props.board} />
         </View>
     )
 }

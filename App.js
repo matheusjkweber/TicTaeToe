@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Game from './src/components/Game'
-import Board from './src/components/Board'
-import { createBoard } from './src/utils/gameLogic'
+import { 
+  createBoard,
+  gameState
+} from './src/utils/gameLogic'
+
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+
+const initialState = {
+  board: createBoard(3, 3),
+  gameState: gameState.PAUSE
+}
+const reducer = (state = initialState) => {
+  return state
+}
+
+const store = createStore(reducer)
 
 export default class App extends Component {
   constructor(props) {
@@ -12,34 +27,16 @@ export default class App extends Component {
 
   createState = () => {
      return {
-      board: createBoard(3, 3)
+      board: createBoard(3, 3),
+      gameState: gameState.PAUSE
     }
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Game board={this.state.board} />
-      </View>
+        <Provider store={store}>
+          <Game board={this.state.board} gameState={this.state.gameState}/>
+        </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});

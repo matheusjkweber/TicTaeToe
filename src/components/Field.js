@@ -1,11 +1,12 @@
 import React from 'react'
 import { 
         View,
-        Dimensions,
-        StyleSheet
+        StyleSheet,
+        TouchableWithoutFeedback
 } from 'react-native'
 import common from './../style/common'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { gameState } from '../utils/gameLogic';
 
 export default props => {
     let style = null
@@ -23,20 +24,22 @@ export default props => {
 
     let fieldValue = null
 
-    if(props.fieldValue === 'player1') {
+    if(props.fieldValue === gameState.PLAYER1PLAYED) {
         fieldValue = <Icon name="circle-thin" size={common.sizes.fieldSize} color={common.colors.player1Color} />
-    } else if(props.fieldValue === 'player2') {
+    } else if(props.fieldValue === gameState.PLAYER2PLAYED) {
         fieldValue = <Icon name="times" size={common.sizes.fieldSize} color={common.colors.player2Color} />
     }
 
     return (
-        <View style={styles.container}>
-            <View style={[styles.fieldValue]}>
-                {fieldValue}
+        <TouchableWithoutFeedback onPress={props.onSelect}>
+            <View style={styles.container}>
+                <View style={[styles.fieldValue]}>
+                    {fieldValue}
+                </View>
+                <View style={[style, diagonalOrientation]} />
+                
             </View>
-            <View style={[style, diagonalOrientation]} />
-            
-        </View>
+        </TouchableWithoutFeedback>
     )
 }
 

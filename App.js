@@ -16,12 +16,17 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch(action.type) {
-    case gameState.PLAYER1PLAYING: 
+    case gameState.GAMESTARTED: 
       return {
         board: createBoard(3, 3),
         gameState: gameState.PLAYER1PLAYING
       }
-
+    case gameState.PLAYER1PLAYED:
+    case gameState.PLAYER2PLAYED:
+      return {
+        board: action.payload,
+        gameState: action.type == gameState.PLAYER1PLAYED ? gameState.PLAYER2PLAYING : gameState.PLAYER1PLAYING
+      }
   }
   return state
 }

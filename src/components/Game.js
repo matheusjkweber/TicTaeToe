@@ -19,8 +19,15 @@ import {
 import { 
     StartNewGame,
     EndRound,
-    EndGame
+    EndGame,
+    UpdateRanking
 } from '../actions/gameActions'
+
+import {
+    getRanking,
+    saveRanking
+} from '../utils/storage'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
@@ -34,6 +41,15 @@ function mapStateToProps(state) {
 }
 
 class Game extends Component {
+    constructor(props) {
+        super(props);
+        (async () => {
+            const ranking = await getRanking()
+            console.log(ranking)
+            this.props.updateRanking(ranking, this.props.state)
+        })();
+    }
+
     onEndGame = () => {
         let victory = won(this.props.victoryConditions)
         if(victory !== null) {
@@ -45,12 +61,14 @@ class Game extends Component {
             let nextState = victory[0].played === gameState.PLAYER1PLAYED ? gameState.PLAYER1WIN : gameState.PLAYER2WIN
 
             let ranking = updateRanking(this.props.ranking, nextState)
-
+            saveRanking(ranking)
             this.props.endGame(nextState, ranking)
         } else if(tie(this.props.victoryConditions) === true) {
             Alert.alert("TIE!!", "It`s a tie!")
 
             let ranking = updateRanking(this.props.ranking, gameState.TIE)
+            saveRanking(ranking)
+
             this.props.endGame(gameState.TIE, ranking)
         }
     }
@@ -71,9 +89,18 @@ class Game extends Component {
             
             let victoryConditions = updateVictoryConditions(this.props.victoryConditions, field)
             this.props.endRound(field.fieldValue, board, victoryConditions)
+            this.onEndGame()
         } 
-        
-        this.onEndGame()
+    }
+
+    onClickReset = () => {
+        let ranking = {
+            player1Victories: 0,
+            player2Victories: 0,
+            totalGames: 0
+        }
+        saveRanking(ranking)
+        this.props.updateRanking(ranking, this.props.state)
     }
 
     render() {
@@ -81,7 +108,8 @@ class Game extends Component {
             <View style={styles.mainContainer}>
                 <Header style={styles.header} player1Score={this.props.ranking.player1Victories} 
                     player2Score={this.props.ranking.player2Victories} 
-                    gamesScore={this.props.ranking.totalGames} />
+                    numberOfGames={this.props.ranking.totalGames}
+                    onClickReset={() => this.onClickReset()} />
                 <Board style={styles.board} board={this.props.board} onSelectField={this.onSelectField}/>
                 <Footer style={styles.footer} gameState={this.props.gameState} buttonAction={() => this.props.startNewGame()} />
             </View>
@@ -93,9 +121,11 @@ function mapDispatchToProps(dispatch, props){
     return {
         startNewGame : bindActionCreators(StartNewGame, dispatch),
         endRound : bindActionCreators(EndRound, dispatch),
-        endGame : bindActionCreators(EndGame, dispatch)
+        endGame : bindActionCreators(EndGame, dispatch),
+        updateRanking: bindActionCreators(UpdateRanking, dispatch)
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Game)
 
 const styles = StyleSheet.create({

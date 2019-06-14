@@ -13,7 +13,7 @@ export default props => {
     return (
         <View style={styles.container}>
             <View style={styles.clearButton}>
-                <Button color={common.colors.buttonDefault} title={"Reset"}/>
+                <Button color={common.colors.buttonDefault} onPress={props.onClickReset} title={"Reset"}/>
             </View>
             <View style={styles.board}>
                 <Text style={styles.player1Score}>Player 1: 

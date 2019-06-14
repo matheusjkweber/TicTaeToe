@@ -26,3 +26,12 @@ export function EndGame(state, ranking) {
         }
     }
 }
+
+export function UpdateRanking(ranking) {
+    return {
+        type: "UPDATE_RANKING",
+        payload: {
+            ranking: ranking
+        }
+    }
+}

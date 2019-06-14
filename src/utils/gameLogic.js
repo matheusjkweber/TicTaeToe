@@ -24,7 +24,7 @@ function createVictoryConditions() {
         [{r: 0, c: 2, played: null}, {r: 1, c: 1, played: null}, {r: 2, c: 0, played: null}],
       ]
 } 
-  
+
 const createRanking = () => {
     return {
         player1Victories: 0,
@@ -34,15 +34,14 @@ const createRanking = () => {
 }
 
 const updateRanking = (ranking, state) => {
-    let copyRanking = ranking
-    if(state = gameState.PLAYER1WIN) {
+    let copyRanking = {...ranking}
+    if(state === gameState.PLAYER1WIN) {
         copyRanking.player1Victories++
-    } else if(state = gameState.PLAYER2WIN) {
+    } else if(state === gameState.PLAYER2WIN) {
         copyRanking.player2Victories++
     }
 
     copyRanking.totalGames++
-    console.log(copyRanking)
     return copyRanking
 }
 
@@ -70,7 +69,7 @@ const cloneBoard = board => {
 }
 
 const updateVictoryConditions = (victoryConditions, field) => {
-    let cloneVictories = victoryConditions
+    let cloneVictories = [...victoryConditions]
     let line = 0
     cloneVictories.forEach ( victoryLine => {
         let fields = 0

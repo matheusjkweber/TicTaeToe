@@ -15,17 +15,19 @@ const initialState = {
   board: createBoard(3, 3),
   victoryConditions: createVictoryConditions(),
   gameState: gameState.PAUSE,
+  victoryLine: null,
   ranking: createRanking()
 }
 
 const reducer = (state = initialState, action) => {
+  console.log(action.type)
   switch(action.type) {
     case gameState.GAMESTARTED: 
       return {
         board: createBoard(3, 3),
         victoryConditions: createVictoryConditions(),
         gameState: gameState.PLAYER1PLAYING,
-        ranking: createRanking()
+        ranking: state.ranking
       }
     case gameState.PLAYER1PLAYED:
     case gameState.PLAYER2PLAYED:
@@ -42,6 +44,13 @@ const reducer = (state = initialState, action) => {
         board: state.board,
         victoryConditions: state.victoryConditions,
         gameState: action.type,
+        ranking: action.payload.ranking
+      }
+    case "UPDATE_RANKING":
+      return {
+        board: state.board,
+        victoryConditions: state.victoryConditions,
+        gameState: state.gameState,
         ranking: action.payload.ranking
       }
   }

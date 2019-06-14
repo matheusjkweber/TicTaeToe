@@ -20,7 +20,8 @@ import {
     StartNewGame,
     EndRound,
     EndGame,
-    UpdateRanking
+    UpdateRanking,
+    actionNames
 } from '../actions/gameActions'
 
 import {
@@ -46,7 +47,9 @@ class Game extends Component {
         super(props);
         (async () => {
             const ranking = await getRanking()
-            this.props.updateRanking(ranking, this.props.state)
+            if(ranking != null) {
+                this.props.updateRanking(ranking, this.props.state)
+            }
         })();
     }
 
@@ -58,7 +61,7 @@ class Game extends Component {
             
             Alert.alert("YOU WIN!", text)
 
-            let nextState = victory[0].played === gameState.PLAYER1PLAYED ? gameState.PLAYER1WIN : gameState.PLAYER2WIN
+            let nextState = victory[0].played === gameState.PLAYER1PLAYED ? actionNames.PLAYER1WIN : actionNames.PLAYER2WIN
 
             let ranking = updateRanking(this.props.ranking, nextState)
             saveRanking(ranking)
@@ -69,7 +72,7 @@ class Game extends Component {
             let ranking = updateRanking(this.props.ranking, gameState.TIE)
             saveRanking(ranking)
 
-            this.props.endGame(gameState.TIE, ranking, null)
+            this.props.endGame(actionNames.TIE, ranking, null)
         }
     }
 
@@ -85,10 +88,12 @@ class Game extends Component {
     
             field.fieldValue = this.props.gameState == gameState.PLAYER1PLAYING ? gameState.PLAYER1PLAYED : gameState.PLAYER2PLAYED
 
+            let nextAction = this.props.gameState == gameState.PLAYER1PLAYING ? actionNames.PLAYER1PLAYED : actionNames.PLAYER2PLAYED
+
             board[row][column] = field
             
             let victoryConditions = updateVictoryConditions(this.props.victoryConditions, field)
-            this.props.endRound(field.fieldValue, board, victoryConditions)
+            this.props.endRound(nextAction, board, victoryConditions)
             this.onEndGame()
         } 
     }
@@ -117,7 +122,8 @@ class Game extends Component {
     render() {
         return (
             <View style={styles.mainContainer}>
-                <Header style={styles.header} player1Score={this.props.ranking.player1Victories} 
+                <Header style={styles.header} 
+                    player1Score={this.props.ranking.player1Victories} 
                     player2Score={this.props.ranking.player2Victories} 
                     numberOfGames={this.props.ranking.totalGames}
                     onClickReset={() => this.onClickReset()} />

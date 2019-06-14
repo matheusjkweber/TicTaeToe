@@ -10,16 +10,20 @@ const gameState = {
     PAUSE: 'paused'
 }
 
-export const victoryConditions = [
-    [0, 0], [0, 1], [0, 2],
-    [1, 0], [1, 1], [1, 2],
-    [2, 0], [2, 1], [2, 2],
-    [0, 0], [1, 0], [2, 0],
-    [0, 1], [1, 1], [1, 2],
-    [0, 2], [1, 2], [2, 2],
-    [0, 0], [1, 1], [2, 2],
-    [0, 2], [1, 1], [2, 0],
-  ]
+function createVictoryConditions() {
+    return [
+        [{r: 0, c: 0, played: null}, {r: 0, c: 1, played: null}, {r: 0, c: 2, played: null}],
+        [{r: 1, c: 0, played: null}, {r: 1, c: 1, played: null}, {r: 1, c: 2, played: null}],
+        [{r: 2, c: 0, played: null}, {r: 2, c: 1, played: null}, {r: 2, c: 2, played: null}],
+    
+        [{r: 0, c: 0, played: null}, {r: 1, c: 0, played: null}, {r: 2, c: 0, played: null}],
+        [{r: 0, c: 1, played: null}, {r: 1, c: 1, played: null}, {r: 2, c: 1, played: null}],
+        [{r: 0, c: 2, played: null}, {r: 1, c: 2, played: null}, {r: 2, c: 2, played: null}],
+    
+        [{r: 0, c: 0, played: null}, {r: 1, c: 1, played: null}, {r: 2, c: 2, played: null}],
+        [{r: 0, c: 2, played: null}, {r: 1, c: 1, played: null}, {r: 2, c: 0, played: null}],
+      ]
+} 
   
 
 const createBoard = (rows, columns) => {
@@ -45,12 +49,32 @@ const cloneBoard = board => {
     })
 }
 
-const won = board => {
-    board.forEach(col => {
-        console.log(col[0])
-        let result = col.filter(field => (field.fieldValue === gameState.PLAYER1PLAYED))
-        console.log(result)
+const updateVictoryConditions = (victoryConditions, field) => {
+    let cloneVictories = victoryConditions
+    let line = 0
+    cloneVictories.forEach ( victoryLine => {
+        let fields = 0
+        victoryLine.forEach ( victoryField => {
+            if(victoryField.r === field.row && victoryField.c === field.column) {
+                cloneVictories[line][fields].played = field.fieldValue
+            }
+            fields++
+        })
+        line++
     })
+
+    return cloneVictories
+}
+const won = victoryConditions => {
+    let victory = null
+    victoryConditions.forEach( victoryLine => {
+        let player1Win = victoryLine.filter(field => field.played === gameState.PLAYER1PLAYED).length === 3
+        let player2Win = victoryLine.filter(field => field.played === gameState.PLAYER2PLAYED).length === 3
+        if(player1Win || player2Win) {
+            victory = victoryLine
+        }
+    })    
+    return victory
 }
 
 const getVictoryLine = (board, row, column) => {
@@ -74,5 +98,7 @@ export {
     createBoard,
     gameState,
     cloneBoard,
+    createVictoryConditions,
+    updateVictoryConditions,
     won
 }

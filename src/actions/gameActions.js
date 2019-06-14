@@ -8,9 +8,18 @@ export function StartNewGame() {
     }
 }
 
-export function EndRound(state, board) {
+export function EndRound(state, board, victoryConditions) {
     return {
         type: state,
-        payload: board
+        payload: {
+            board: board,
+            victoryConditions: victoryConditions
+        }
+    }
+}
+
+export function EndGame(state) {
+    return {
+        type: state
     }
 }

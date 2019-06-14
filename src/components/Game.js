@@ -10,12 +10,14 @@ import Footer from './Footer'
 import { 
         gameState,
         cloneBoard, 
+        updateVictoryConditions,
         won
 } from './../utils/gameLogic'
 
 import { 
     StartNewGame,
-    EndRound
+    EndRound,
+    EndGame
 } from '../actions/gameActions'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -23,13 +25,15 @@ import { bindActionCreators } from 'redux';
 function mapStateToProps(state) {
     return {
         board: state.board,
-        gameState: state.gameState
+        gameState: state.gameState,
+        victoryConditions: state.victoryConditions
     }
 }
 
 class Game extends Component {
     onSelectField = (row, column) => {
         // Verify if is in a valid state.
+
         if(this.props.gameState == gameState.PLAYER1PLAYING || this.props.gameState == gameState.PLAYER2PLAYING) {
             let board = cloneBoard(this.props.board)
             let field = board[row][column]
@@ -42,8 +46,20 @@ class Game extends Component {
 
             board[row][column] = field
             
-            this.props.endRound(field.fieldValue, board)
-            won(this.props.board)
+            let victoryConditions = updateVictoryConditions(this.props.victoryConditions, field)
+            this.props.endRound(field.fieldValue, board, victoryConditions)
+        } 
+        
+        let victory = won(this.props.victoryConditions)
+
+        if(victory !== null) {
+            let text = victory[0].played === gameState.PLAYER1PLAYED ? "Congratulations! Player 1 WINS! Click on 'Restart Game' to play again." 
+                : "Congratulations! Player 2 WINS! Click on 'Restart Game' to play again."                
+            
+            Alert.alert("YOU WIN!", text)
+
+            let nextState = victory[0].played === gameState.PLAYER1PLAYED ? gameState.PLAYER1WIN : gameState.PLAYER2WIN
+            this.props.endGame(nextState)
         } 
     }
 
@@ -61,7 +77,8 @@ class Game extends Component {
 function mapDispatchToProps(dispatch, props){
     return {
         startNewGame : bindActionCreators(StartNewGame, dispatch),
-        endRound : bindActionCreators(EndRound, dispatch)
+        endRound : bindActionCreators(EndRound, dispatch),
+        endGame : bindActionCreators(EndGame, dispatch)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

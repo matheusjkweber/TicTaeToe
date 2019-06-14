@@ -25,6 +25,26 @@ function createVictoryConditions() {
       ]
 } 
   
+const createRanking = () => {
+    return {
+        player1Victories: 0,
+        player2Victories: 0,
+        totalGames: 0
+    }
+}
+
+const updateRanking = (ranking, state) => {
+    let copyRanking = ranking
+    if(state = gameState.PLAYER1WIN) {
+        copyRanking.player1Victories++
+    } else if(state = gameState.PLAYER2WIN) {
+        copyRanking.player2Victories++
+    }
+
+    copyRanking.totalGames++
+    console.log(copyRanking)
+    return copyRanking
+}
 
 const createBoard = (rows, columns) => {
     return Array(rows).fill(0).map((_, row) => {
@@ -114,5 +134,7 @@ export {
     createVictoryConditions,
     updateVictoryConditions,
     tie,
-    won
+    won,
+    createRanking,
+    updateRanking
 }

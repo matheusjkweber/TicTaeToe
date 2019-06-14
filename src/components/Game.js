@@ -12,6 +12,7 @@ import {
         cloneBoard, 
         updateVictoryConditions,
         tie,
+        updateRanking,
         won
 } from './../utils/gameLogic'
 
@@ -27,14 +28,14 @@ function mapStateToProps(state) {
     return {
         board: state.board,
         gameState: state.gameState,
-        victoryConditions: state.victoryConditions
+        victoryConditions: state.victoryConditions,
+        ranking: state.ranking
     }
 }
 
 class Game extends Component {
     onEndGame = () => {
         let victory = won(this.props.victoryConditions)
-        console.log(victory)
         if(victory !== null) {
             let text = victory[0].played === gameState.PLAYER1PLAYED ? "Congratulations! Player 1 WINS! Click on 'Restart Game' to play again." 
                 : "Congratulations! Player 2 WINS! Click on 'Restart Game' to play again."                
@@ -42,16 +43,20 @@ class Game extends Component {
             Alert.alert("YOU WIN!", text)
 
             let nextState = victory[0].played === gameState.PLAYER1PLAYED ? gameState.PLAYER1WIN : gameState.PLAYER2WIN
-            this.props.endGame(nextState)
+
+            let ranking = updateRanking(this.props.ranking, nextState)
+
+            this.props.endGame(nextState, ranking)
         } else if(tie(this.props.victoryConditions) === true) {
             Alert.alert("TIE!!", "It`s a tie!")
-            this.props.endGame(gameState.TIE)
+
+            let ranking = updateRanking(this.props.ranking, gameState.TIE)
+            this.props.endGame(gameState.TIE, ranking)
         }
     }
 
     onSelectField = (row, column) => {
         // Verify if is in a valid state.
-
         if(this.props.gameState == gameState.PLAYER1PLAYING || this.props.gameState == gameState.PLAYER2PLAYING) {
             let board = cloneBoard(this.props.board)
             let field = board[row][column]
@@ -72,10 +77,11 @@ class Game extends Component {
     }
 
     render() {
-        console.log(this.props.gameState)
         return (
             <View style={styles.mainContainer}>
-                <Header style={styles.header} />
+                <Header style={styles.header} player1Score={this.props.ranking.player1Victories} 
+                    player2Score={this.props.ranking.player2Victories} 
+                    gamesScore={this.props.ranking.totalGames} />
                 <Board style={styles.board} board={this.props.board} onSelectField={this.onSelectField}/>
                 <Footer style={styles.footer} gameState={this.props.gameState} buttonAction={() => this.props.startNewGame()} />
             </View>

@@ -33,6 +33,7 @@ const reducer = (state = initialState, action) => {
       }
     case gameState.PLAYER1WIN:
     case gameState.PLAYER2WIN:
+    case gameState.TIE:
       return {
         board: state.board,
         victoryConditions: state.victoryConditions,

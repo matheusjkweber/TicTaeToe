@@ -38,6 +38,10 @@ export default props => {
             textToShow = "Player 2 WINS!."
             buttonTitle = "Restart Game"
             break
+        case gameState.TIE:
+            textToShow = "It`s a TIE!"
+            buttonTitle = "Restart Game"
+            break
     }
     
     return (

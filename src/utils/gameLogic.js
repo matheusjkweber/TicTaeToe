@@ -77,6 +77,19 @@ const won = victoryConditions => {
     return victory
 }
 
+const tie = victoryConditions => {
+    let countPlayed = 0
+    
+    victoryConditions.forEach( victoryLine => {
+        countPlayed += victoryLine.filter(field => field.played !== null).length === 3 ? 1 : 0
+    })
+
+    if(countPlayed === 8)  {
+        return true
+    }
+    return false
+}
+
 const getVictoryLine = (board, row, column) => {
     const fields = []                                       
     const rows = [row - 1, row, row + 1]                    
@@ -100,5 +113,6 @@ export {
     cloneBoard,
     createVictoryConditions,
     updateVictoryConditions,
+    tie,
     won
 }

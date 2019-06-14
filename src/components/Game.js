@@ -11,6 +11,7 @@ import {
         gameState,
         cloneBoard, 
         updateVictoryConditions,
+        tie,
         won
 } from './../utils/gameLogic'
 
@@ -31,6 +32,23 @@ function mapStateToProps(state) {
 }
 
 class Game extends Component {
+    onEndGame = () => {
+        let victory = won(this.props.victoryConditions)
+        console.log(victory)
+        if(victory !== null) {
+            let text = victory[0].played === gameState.PLAYER1PLAYED ? "Congratulations! Player 1 WINS! Click on 'Restart Game' to play again." 
+                : "Congratulations! Player 2 WINS! Click on 'Restart Game' to play again."                
+            
+            Alert.alert("YOU WIN!", text)
+
+            let nextState = victory[0].played === gameState.PLAYER1PLAYED ? gameState.PLAYER1WIN : gameState.PLAYER2WIN
+            this.props.endGame(nextState)
+        } else if(tie(this.props.victoryConditions) === true) {
+            Alert.alert("TIE!!", "It`s a tie!")
+            this.props.endGame(gameState.TIE)
+        }
+    }
+
     onSelectField = (row, column) => {
         // Verify if is in a valid state.
 
@@ -50,20 +68,11 @@ class Game extends Component {
             this.props.endRound(field.fieldValue, board, victoryConditions)
         } 
         
-        let victory = won(this.props.victoryConditions)
-
-        if(victory !== null) {
-            let text = victory[0].played === gameState.PLAYER1PLAYED ? "Congratulations! Player 1 WINS! Click on 'Restart Game' to play again." 
-                : "Congratulations! Player 2 WINS! Click on 'Restart Game' to play again."                
-            
-            Alert.alert("YOU WIN!", text)
-
-            let nextState = victory[0].played === gameState.PLAYER1PLAYED ? gameState.PLAYER1WIN : gameState.PLAYER2WIN
-            this.props.endGame(nextState)
-        } 
+        this.onEndGame()
     }
 
     render() {
+        console.log(this.props.gameState)
         return (
             <View style={styles.mainContainer}>
                 <Header style={styles.header} />

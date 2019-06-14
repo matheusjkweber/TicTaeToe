@@ -5,9 +5,8 @@
 This is a Tic Tae Toe app developed in React Native using Redux.
 
 ## Usage
-1 - Clone the repository.
+1 - Clone the repository.  
 2 - Run command npm install.
-3 - y
 
 ## Screenshots
 

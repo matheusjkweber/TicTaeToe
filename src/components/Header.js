@@ -1,4 +1,10 @@
-import React, { Component } from 'react'
+/**
+ * Header component that will hold the ranking.
+ * 
+ * 
+ */
+
+ import React, { Component } from 'react'
 import {  
     View,
     Button,

@@ -1,4 +1,10 @@
-import React from 'react'
+/**
+ * Field component that will draw the Xs and Os into the board.
+ * Will also add the cross lines.
+ * 
+ */
+
+ import React from 'react'
 import { 
         View,
         StyleSheet,
@@ -12,6 +18,7 @@ export default props => {
     let style = null
     let diagonalOrientation = null
 
+    // Verify if need to add a crossline and what kind of cross line it is.
     if(props.horizontalLine) {
         style = styles.horizontalLine
     } else if(props.leftToRightDiagonal) {
@@ -27,6 +34,7 @@ export default props => {
 
     let fieldValue = null
 
+    // Verify if will draw the cricle or times icon in the field.
     if(props.fieldValue === gameState.PLAYER1PLAYED) {
         fieldValue = <Icon name="circle-thin" size={common.sizes.fieldSize} color={common.colors.player1Color} />
     } else if(props.fieldValue === gameState.PLAYER2PLAYED) {

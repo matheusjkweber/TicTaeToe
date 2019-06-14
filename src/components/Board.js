@@ -1,3 +1,9 @@
+/**
+ * Board component of the game, it build the board using the Field component.
+ *
+ * 
+ */
+
 import React from 'react'
 import { 
     View,
@@ -6,6 +12,7 @@ import {
 import Field from './Field'
 
 export default props => {
+    // Map the matrix board array to react elements.
     const rows = props.board.map((row, r) => {
         const columns = row.map((field, c) => {
             let leftToRightDiagonal = false

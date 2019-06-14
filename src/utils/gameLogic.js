@@ -1,4 +1,11 @@
-const gameState = {
+/**
+ * Game logic file, will hold all the functions and enums needed in order to play the game.
+ * 
+ * 
+ */
+
+ // All the states that the game can assume.
+ const gameState = {
     GAMESTARTED: 'gameStarted',
     PLAYER1PLAYING: 'player1Playing',
     PLAYER1PLAYED: 'player1Played',
@@ -10,6 +17,7 @@ const gameState = {
     PAUSE: 'paused'
 }
 
+// All the lines that the player can win.
 function createVictoryConditions() {
     return [
         [{r: 0, c: 0, played: null}, {r: 0, c: 1, played: null}, {r: 0, c: 2, played: null}],
@@ -25,6 +33,7 @@ function createVictoryConditions() {
       ]
 } 
 
+// Initial ranking.
 const createRanking = () => {
     return {
         player1Victories: 0,
@@ -33,6 +42,7 @@ const createRanking = () => {
     }
 }
 
+// Update ranking.
 const updateRanking = (ranking, state) => {
     let copyRanking = {...ranking}
     if(state === gameState.PLAYER1WIN) {
@@ -45,6 +55,7 @@ const updateRanking = (ranking, state) => {
     return copyRanking
 }
 
+// Initial board.
 const createBoard = (rows, columns) => {
     return Array(rows).fill(0).map((_, row) => {
         return Array(columns).fill(0).map((_, column) => {
@@ -60,6 +71,7 @@ const createBoard = (rows, columns) => {
     })
 }
 
+// Clone the board.
 const cloneBoard = board => {
     return board.map(rows => {
         return rows.map(field => {
@@ -68,6 +80,7 @@ const cloneBoard = board => {
     })
 }
 
+// Update the victory conditions by copying it and filling the field.
 const updateVictoryConditions = (victoryConditions, field) => {
     let cloneVictories = [...victoryConditions]
     let line = 0
@@ -84,6 +97,8 @@ const updateVictoryConditions = (victoryConditions, field) => {
 
     return cloneVictories
 }
+
+// Return if someone and who wins the game.
 const won = victoryConditions => {
     let victory = null
     victoryConditions.forEach( victoryLine => {
@@ -96,6 +111,7 @@ const won = victoryConditions => {
     return victory
 }
 
+// Return if there is a tie in the game.
 const tie = victoryConditions => {
     let countPlayed = 0
     
@@ -107,23 +123,6 @@ const tie = victoryConditions => {
         return true
     }
     return false
-}
-
-const getVictoryLine = (board, row, column) => {
-    const fields = []                                       
-    const rows = [row - 1, row, row + 1]                    
-    const columns = [column - 1, column, column + 1]
-    rows.forEach(r => {
-        columns.forEach(c => {
-            const diferent = r !== row || c !== column
-            const validRow = r >= 0 && r < board.length
-            const validColumn = c >= 0 && c < board[0].length
-            if (diferent && validRow && validColumn) {
-                neighbors.push(board[r][c])
-            }
-        })
-    })
-    return neighbors
 }
 
 export {

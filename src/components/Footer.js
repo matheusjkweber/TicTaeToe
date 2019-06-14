@@ -1,3 +1,9 @@
+/**
+ * Footer component that will hold the game state and the start/restart button of the game.
+ * 
+ * 
+ */
+
 import React, { Component } from 'react'
 import {  
     View,
@@ -17,6 +23,7 @@ export default props => {
     let textToShow = ""
     let buttonTitle = ""
 
+    // Text that will show in the bottom textField and in the button based on the gameState.
     switch(props.gameState) {
         case gameState.PAUSE:
             textToShow = "Click on 'Start Game' to start a new game."

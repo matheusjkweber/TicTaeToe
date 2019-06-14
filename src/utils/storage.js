@@ -1,4 +1,10 @@
-import AsyncStorage from '@react-native-community/async-storage'
+/**
+ * Async storage component, will read and save offline data.
+ * 
+ * 
+ */
+
+ import AsyncStorage from '@react-native-community/async-storage'
 
 const keys = {
     RANKING: "ranking"

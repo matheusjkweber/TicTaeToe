@@ -1,3 +1,10 @@
+/**
+ * App reducer, will hold the reducer of App.js
+ * 
+ * 
+ */
+
+
 import { 
     createBoard,
     gameState,

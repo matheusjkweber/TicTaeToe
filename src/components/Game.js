@@ -1,3 +1,9 @@
+/**
+ * Game component that will hold all the game logic and UI.
+ * Also will show when a play win or tie the game and will be enable to restart the game and the ranking.
+ * 
+ */
+
 import React, { Component } from 'react'
 import {  
     View,
@@ -33,6 +39,7 @@ import {
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 
+// Redux function, map the state of the app to props.
 function mapStateToProps(state) {
     return {
         board: state.board,
@@ -44,6 +51,7 @@ function mapStateToProps(state) {
 }
 
 class Game extends Component {
+    // Constructor needed to update the ranking async.
     constructor(props) {
         super(props);
         (async () => {
@@ -54,6 +62,7 @@ class Game extends Component {
         })();
     }
 
+    // End game function, will verify if is a victory or a tie and update the ranking.
     onEndGame = () => {
         let victory = won(this.props.victoryConditions)
         if(victory !== null) {
@@ -77,6 +86,7 @@ class Game extends Component {
         }
     }
 
+    // Select field function, will update the game state and the board, also will change the state of the app and verify if the game ends.
     onSelectField = (row, column) => {
         // Verify if is in a valid state.
         if(this.props.gameState == gameState.PLAYER1PLAYING || this.props.gameState == gameState.PLAYER2PLAYING) {
@@ -99,6 +109,7 @@ class Game extends Component {
         } 
     }
 
+    // Reset function, will reset the ranking.
     onClickReset = () => {
         let ranking = {
             player1Victories: 0,
@@ -109,6 +120,7 @@ class Game extends Component {
         this.props.updateRanking(ranking, this.props.state)
     }
 
+    // Will convert the victory line in victory fields.
     getVictoryFields = () => {
         if(this.props.victoryLine == null) {
             return null
@@ -137,7 +149,8 @@ class Game extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch, props){
+// Redux function, will control the dispatchs.
+function mapDispatchToProps(dispatch){
     return {
         startNewGame : bindActionCreators(StartNewGame, dispatch),
         endRound : bindActionCreators(EndRound, dispatch),
@@ -146,6 +159,7 @@ function mapDispatchToProps(dispatch, props){
     }
 }
 
+// Redux expression, will connect redux functions to the Game class.
 export default connect(mapStateToProps, mapDispatchToProps)(Game)
 
 const styles = StyleSheet.create({

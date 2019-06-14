@@ -1,3 +1,9 @@
+/**
+ * Styles component that will hold common styles.
+ * 
+ * 
+ */
+
 import { Dimensions } from 'react-native'
 
 export default {

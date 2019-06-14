@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {  
     View,
     StyleSheet,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native'
 import Header from './Header'
 import Board from './Board'
@@ -122,13 +123,15 @@ class Game extends Component {
     render() {
         return (
             <View style={styles.mainContainer}>
-                <Header style={styles.header} 
-                    player1Score={this.props.ranking.player1Victories} 
-                    player2Score={this.props.ranking.player2Victories} 
-                    numberOfGames={this.props.ranking.totalGames}
-                    onClickReset={() => this.onClickReset()} />
-                <Board style={styles.board} board={this.props.board} onSelectField={this.onSelectField} victoryLine={this.getVictoryFields()}/>
-                <Footer style={styles.footer} gameState={this.props.gameState} buttonAction={() => this.props.startNewGame()} />
+                <ScrollView>
+                    <Header style={styles.header} 
+                        player1Score={this.props.ranking.player1Victories} 
+                        player2Score={this.props.ranking.player2Victories} 
+                        numberOfGames={this.props.ranking.totalGames}
+                        onClickReset={() => this.onClickReset()} />
+                    <Board style={styles.board} board={this.props.board} onSelectField={this.onSelectField} victoryLine={this.getVictoryFields()}/>
+                    <Footer style={styles.footer} gameState={this.props.gameState} buttonAction={() => this.props.startNewGame()} />
+                </ScrollView>
             </View>
         )
     }

@@ -20,6 +20,9 @@ export default props => {
     } else if(props.rightToLeftDiagonal) {
         style = styles.diagonalLine
         diagonalOrientation = {transform: [{rotate: '-45deg'}]};
+    } else if(props.verticalLine) {
+        style = styles.verticalLine
+        diagonalOrientation = {transform: [{rotate: '90deg'}]};
     }
 
     let fieldValue = null
@@ -64,6 +67,13 @@ const styles = StyleSheet.create({
         marginTop: '-50%',
         width: '140%',
         left: '-20%'
+    },
+    verticalLine: {
+        height: 1,
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        marginTop: '-50%',
+        width: '100%',
     },
     fieldValue: {
         alignItems: 'center',

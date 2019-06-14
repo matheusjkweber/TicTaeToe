@@ -18,11 +18,12 @@ export function EndRound(state, board, victoryConditions) {
     }
 }
 
-export function EndGame(state, ranking) {
+export function EndGame(state, ranking, victoryLine) {
     return {
         type: state,
         payload: {
-            ranking: ranking
+            ranking: ranking,
+            victoryLine: victoryLine
         }
     }
 }

@@ -36,7 +36,8 @@ function mapStateToProps(state) {
         board: state.board,
         gameState: state.gameState,
         victoryConditions: state.victoryConditions,
-        ranking: state.ranking
+        ranking: state.ranking,
+        victoryLine: state.victoryLine
     }
 }
 
@@ -45,7 +46,6 @@ class Game extends Component {
         super(props);
         (async () => {
             const ranking = await getRanking()
-            console.log(ranking)
             this.props.updateRanking(ranking, this.props.state)
         })();
     }
@@ -62,14 +62,14 @@ class Game extends Component {
 
             let ranking = updateRanking(this.props.ranking, nextState)
             saveRanking(ranking)
-            this.props.endGame(nextState, ranking)
+            this.props.endGame(nextState, ranking, victory)
         } else if(tie(this.props.victoryConditions) === true) {
             Alert.alert("TIE!!", "It`s a tie!")
 
             let ranking = updateRanking(this.props.ranking, gameState.TIE)
             saveRanking(ranking)
 
-            this.props.endGame(gameState.TIE, ranking)
+            this.props.endGame(gameState.TIE, ranking, null)
         }
     }
 
@@ -103,6 +103,17 @@ class Game extends Component {
         this.props.updateRanking(ranking, this.props.state)
     }
 
+    getVictoryFields = () => {
+        if(this.props.victoryLine == null) {
+            return null
+        }
+        let fields = []
+        this.props.victoryLine.forEach(line => {
+            fields.push(this.props.board[line.r][line.c])
+        })
+        return fields
+    }
+
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -110,7 +121,7 @@ class Game extends Component {
                     player2Score={this.props.ranking.player2Victories} 
                     numberOfGames={this.props.ranking.totalGames}
                     onClickReset={() => this.onClickReset()} />
-                <Board style={styles.board} board={this.props.board} onSelectField={this.onSelectField}/>
+                <Board style={styles.board} board={this.props.board} onSelectField={this.onSelectField} victoryLine={this.getVictoryFields()}/>
                 <Footer style={styles.footer} gameState={this.props.gameState} buttonAction={() => this.props.startNewGame()} />
             </View>
         )
